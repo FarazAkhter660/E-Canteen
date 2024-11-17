@@ -8,20 +8,29 @@ import {
   IconButton,
   Box,
   Typography,
+  Input,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const MenuManagement = () => {
+const MenuManagement = ({ updateMenuSession }) => {
   const [menu, setMenu] = useState([]);
-  const [item, setItem] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [itemImage, setItemImage] = useState(null);
 
-  const addItem = () => {
-    setMenu([...menu, item]);
-    setItem("");
+  const handleAddItem = () => {
+    if (itemName && itemImage) {
+      const newItem = { name: itemName, image: URL.createObjectURL(itemImage) };
+      setMenu([...menu, newItem]);
+      updateMenuSession([...menu, newItem]); // Update the menu session with the new item
+      setItemName("");
+      setItemImage(null);
+    }
   };
 
-  const deleteItem = (index) => {
-    setMenu(menu.filter((_, i) => i !== index));
+  const handleDeleteItem = (index) => {
+    const updatedMenu = menu.filter((_, i) => i !== index);
+    setMenu(updatedMenu);
+    updateMenuSession(updatedMenu); // Update the menu session after deletion
   };
 
   return (
@@ -29,20 +38,25 @@ const MenuManagement = () => {
       <Typography variant="h4" gutterBottom>
         Menu Management
       </Typography>
-      <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 2 }}>
         <TextField
-          label="Menu Item"
-          value={item}
-          onChange={(e) => setItem(e.target.value)}
+          label="Food Item Name"
+          value={itemName}
+          onChange={(e) => setItemName(e.target.value)}
           fullWidth
+        />
+        <Input
+          type="file"
+          inputProps={{ accept: "image/*" }}
+          onChange={(e) => setItemImage(e.target.files[0])}
         />
         <Button
           variant="contained"
           color="primary"
-          onClick={addItem}
-          disabled={!item}
+          onClick={handleAddItem}
+          disabled={!itemName || !itemImage}
         >
-          Add
+          Add Item
         </Button>
       </Box>
       <List>
@@ -53,13 +67,18 @@ const MenuManagement = () => {
               <IconButton
                 edge="end"
                 aria-label="delete"
-                onClick={() => deleteItem(index)}
+                onClick={() => handleDeleteItem(index)}
               >
                 <DeleteIcon />
               </IconButton>
             }
           >
-            <ListItemText primary={menuItem} />
+            <img
+              src={menuItem.image}
+              alt={menuItem.name}
+              style={{ width: "50px", height: "50px", marginRight: "10px" }}
+            />
+            <ListItemText primary={menuItem.name} />
           </ListItem>
         ))}
       </List>

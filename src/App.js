@@ -18,11 +18,18 @@ const navLinkStyle = {
   fontWeight: "bold",
   padding: "8px 16px",
   fontFamily: "Montserrat",
+  fontSize: {
+    xs: "0.75rem",
+    sm: "0.875rem",
+    md: "1rem",
+    lg: "1.125rem",
+  },
 };
 
 const App = () => {
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [menuSession, setMenuSession] = useState([]); // Add menu session state
 
   // Add item to the cart
   const handleAddToCart = (item) => {
@@ -43,6 +50,11 @@ const App = () => {
       setCart([]); // Clear the cart after placing the order
       localStorage.removeItem("cart"); // Remove cart from localStorage
     }
+  };
+
+  // Update menu session
+  const updateMenuSession = (menu) => {
+    setMenuSession(menu); // Update the menu session state
   };
 
   return (
@@ -73,13 +85,16 @@ const App = () => {
         </Link>
       </nav>
       <Routes>
-        <Route path="/Admin/menu-management" element={<MenuManagement />} />
+        <Route
+          path="/Admin/menu-management"
+          element={<MenuManagement updateMenuSession={updateMenuSession} />} // Pass the updateMenuSession function
+        />
         <Route path="/Admin/order-management" element={<OrderManagement />} />
         <Route
           path="/Students/menu"
           element={
             <Menu
-              menu={["Pizza", "Burger", "Fries"]}
+              menu={menuSession} // Use the menuSession for student menu
               onAddToCart={handleAddToCart}
             />
           }

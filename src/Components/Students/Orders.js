@@ -5,6 +5,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
+  Avatar,
   Divider,
 } from "@mui/material";
 
@@ -23,8 +25,11 @@ const Orders = ({ orders }) => {
             </Typography>
             <List>
               {order.items.map((item, idx) => (
-                <ListItem key={idx}>
-                  <ListItemText primary={item} />
+                <ListItem key={idx} sx={{ display: "flex", alignItems: "center" }}>
+                  <ListItemAvatar>
+                    <Avatar src={item.image} alt={item.name} />
+                  </ListItemAvatar>
+                  <ListItemText primary={item.name} />
                 </ListItem>
               ))}
             </List>

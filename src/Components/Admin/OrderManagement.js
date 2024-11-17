@@ -14,13 +14,15 @@ import {
 const OrderManagement = () => {
   const [orders, setOrders] = useState([
     { id: 1, student: "John", status: "Received" },
-    { id: 2, student: "Doe", status: "Picked" },
+    { id: 2, student: "Doe", status: "Received" },
   ]);
 
-  const updateStatus = (id, status) => {
-    setOrders(
-      orders.map((order) => (order.id === id ? { ...order, status } : order))
+  // Function to update the order status
+  const updateStatus = (id, newStatus) => {
+    const updatedOrders = orders.map((order) =>
+      order.id === id ? { ...order, status: newStatus } : order
     );
+    setOrders(updatedOrders);
   };
 
   return (
@@ -28,7 +30,7 @@ const OrderManagement = () => {
       component={Paper}
       sx={{ margin: "20px auto", maxWidth: "800px" }}
     >
-      <Typography variant="h4" sx={{ padding: "16px" }}>
+      <Typography variant="h4" sx={{ padding: "16px", textAlign: "center" }}>
         Order Management
       </Typography>
       <Table>
@@ -45,12 +47,25 @@ const OrderManagement = () => {
               <TableCell>{order.student}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell>
-                <Button onClick={() => updateStatus(order.id, "Picked")}>
-                  Picked
-                </Button>
-                <Button onClick={() => updateStatus(order.id, "Prepared")}>
-                  Prepared
-                </Button>
+                {order.status !== "Picked" && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => updateStatus(order.id, "Picked")}
+                    sx={{ marginRight: "8px" }}
+                  >
+                    Picked
+                  </Button>
+                )}
+                {order.status !== "Prepared" && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => updateStatus(order.id, "Prepared")}
+                  >
+                    Prepared
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}
