@@ -1,45 +1,72 @@
 import React from "react";
+import { Box, Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
 
 const Menu = ({ menu, onAddToCart }) => {
+  const handleAddToCart = (item, event) => {
+    onAddToCart(item);
+    const button = event.target;
+    button.style.opacity = "0.6";
+    setTimeout(() => {
+      button.style.opacity = "1";
+    }, 300);
+  };
+
   return (
-    <div>
-      <h1>Menu</h1>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+    <Box sx={{ padding: "20px" }}>
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{ marginBottom: "20px", fontWeight: "bold", textTransform: "uppercase", fontFamily: "moncerrat" }}
+      >
+        Here are the Menus
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "20px",
+        }}
+      >
         {menu.map((item, index) => (
-          <div
+          <Card
             key={index}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "16px",
-              textAlign: "center",
-              maxWidth: "200px",
+            sx={{
+              maxWidth: "300px",
+              width: "100%",
+              boxShadow: 3,
             }}
           >
-            <img
-              src={item.image}
+            <CardMedia
+              component="img"
+              image={item.image}
               alt={item.name}
-              style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-            />
-            <h3>{item.name}</h3>
-            <button
-              onClick={() => onAddToCart(item)}
-              style={{
-                marginTop: "8px",
-                padding: "8px 16px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
+              sx={{
+                height: "200px",
+                objectFit: "cover", // Ensures all images are uniform
               }}
+            />
+            <CardContent>
+              <Typography variant="h6" align="center" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+                {item.name}
+              </Typography>
+            </CardContent>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                display: "block",
+                margin: "10px auto",
+                transition: "opacity 0.3s ease",
+              }}
+              onClick={(event) => handleAddToCart(item, event)}
             >
               Add to Cart
-            </button>
-          </div>
+            </Button>
+          </Card>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
