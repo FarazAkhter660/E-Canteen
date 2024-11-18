@@ -29,32 +29,33 @@ const navLinkStyle = {
 const App = () => {
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [menuSession, setMenuSession] = useState([]); // Add menu session state
+  const [menuSession, setMenuSession] = useState([]);
 
   // Add item to the cart
   const handleAddToCart = (item) => {
     const updatedCart = [...cart, item];
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   // Place order
-  const handlePlaceOrder = () => {
-    if (cart.length > 0) {
+  const handlePlaceOrder = (order) => {
+    if (order.items.length > 0) {
       const newOrder = {
         id: orders.length + 1,
-        items: cart,
-        status: "Placed",
+        items: order.items,
+        student: order.student, // Include student name
+        status: "Received",
       };
       setOrders([...orders, newOrder]);
-      setCart([]); // Clear the cart after placing the order
-      localStorage.removeItem("cart"); // Remove cart from localStorage
+      setCart([]);
+      localStorage.removeItem("cart");
     }
   };
 
   // Update menu session
   const updateMenuSession = (menu) => {
-    setMenuSession(menu); // Update the menu session state
+    setMenuSession(menu);
   };
 
   return (
@@ -87,23 +88,28 @@ const App = () => {
       <Routes>
         <Route
           path="/Admin/menu-management"
-          element={<MenuManagement updateMenuSession={updateMenuSession} />} // Pass the updateMenuSession function
+          element={<MenuManagement updateMenuSession={updateMenuSession} />}
         />
-        <Route path="/Admin/order-management" element={<OrderManagement />} />
+        <Route
+          path="/Admin/order-management"
+          element={<OrderManagement orders={orders} />}
+        />
         <Route
           path="/Students/menu"
           element={
-            <Menu
-              menu={menuSession} // Use the menuSession for student menu
-              onAddToCart={handleAddToCart}
-            />
+            <Menu menu={menuSession} onAddToCart={handleAddToCart} />
           }
         />
         <Route
           path="/Students/cart"
-          element={<Cart cart={cart} onPlaceOrder={handlePlaceOrder} />}
+          element={
+            <Cart cart={cart} onPlaceOrder={handlePlaceOrder} />
+          }
         />
-        <Route path="/Students/orders" element={<Orders orders={orders} />} />
+        <Route
+          path="/Students/orders"
+          element={<Orders orders={orders} />}
+        />
         <Route path="/" element={<Navigate to="/Students/menu" />} />
       </Routes>
     </Router>

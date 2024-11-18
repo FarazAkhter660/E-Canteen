@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, List, ListItem, ListItemText, Button, TextField } from "@mui/material";
+import { Box, Typography, List, ListItem, Button, TextField } from "@mui/material";
 
 const Cart = ({ cart, onPlaceOrder }) => {
   const [localCart, setLocalCart] = useState(cart);
-  const [studentName, setStudentName] = useState(""); // State for student's name
+  const [studentName, setStudentName] = useState("");
 
-  // Update local cart if the cart prop changes
   useEffect(() => {
     setLocalCart(cart);
   }, [cart]);
 
-  // Remove item from cart
-  const removeItem = (item) => {
-    const updatedCart = localCart.filter((cartItem) => cartItem !== item);
-    setLocalCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save updated cart to localStorage
-  };
-
-  // Handle order placement
-  const handlePlaceOrder = () => {
-    if (studentName.trim() !== "") {
-      onPlaceOrder(studentName, localCart); // Pass the student's name and cart to the parent
+  const handlePlaceOrderClick = () => {
+    if (studentName.trim()) {
+      onPlaceOrder({ items: localCart, student: studentName });
     } else {
       alert("Please enter your name.");
     }
@@ -31,38 +22,30 @@ const Cart = ({ cart, onPlaceOrder }) => {
       <Typography variant="h4" gutterBottom>
         Your Cart
       </Typography>
-
-      {/* Input for student's name */}
       <TextField
-        label="Student Name"
-        variant="outlined"
-        fullWidth
+        label="Your Name"
         value={studentName}
         onChange={(e) => setStudentName(e.target.value)}
-        sx={{ marginBottom: "20px" }}
+        fullWidth
+        sx={{ marginBottom: 2 }}
       />
-
       <List>
         {localCart.length > 0 ? (
           localCart.map((item, index) => (
             <ListItem key={index}>
-              <ListItemText primary={item.name} /> {/* Assuming items have a 'name' */}
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => removeItem(item)}
-              >
-                Remove
-              </Button>
+              <Typography>{item.name}</Typography>
             </ListItem>
           ))
         ) : (
           <Typography variant="h6">Your cart is empty.</Typography>
         )}
       </List>
-
       {localCart.length > 0 && (
-        <Button variant="contained" color="primary" onClick={handlePlaceOrder}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handlePlaceOrderClick}
+        >
           Place Order
         </Button>
       )}
