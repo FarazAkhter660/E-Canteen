@@ -44,7 +44,7 @@ const App = () => {
       const newOrder = {
         id: orders.length + 1,
         items: order.items,
-        student: order.student, // Include student name
+        student: order.student,
         status: "Received",
       };
       setOrders([...orders, newOrder]);

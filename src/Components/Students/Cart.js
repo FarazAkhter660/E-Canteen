@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, List, ListItem, Button, TextField } from "@mui/material";
 
 const Cart = ({ cart, onPlaceOrder }) => {
-  const [localCart, setLocalCart] = useState(cart);
+  const [localCart, setLocalCart] = useState(cart); //A local copy of the cart to ensure the cart can dynamically update if the parent cart changes.
   const [studentName, setStudentName] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { //Whenever the cart prop changes, the useEffect hook updates the localCart state.
     setLocalCart(cart);
   }, [cart]);
 
   const handlePlaceOrderClick = () => {
-    if (studentName.trim()) {
+    if (studentName.trim()) {  //trim removes whitespace from the beginning and end of a string.
+
       onPlaceOrder({ items: localCart, student: studentName });
     } else {
       alert("Please enter your name.");

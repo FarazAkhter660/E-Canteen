@@ -19,7 +19,7 @@ const MenuManagement = ({ updateMenuSession }) => {
 
   const handleAddItem = () => {
     if (itemName && itemImage) {
-      const newItem = { name: itemName, image: URL.createObjectURL(itemImage) };
+      const newItem = { name: itemName, image: URL.createObjectURL(itemImage) }; //Creates a new object with the name and image (converted to a displayable URL).
       setMenu([...menu, newItem]);
       updateMenuSession([...menu, newItem]); // Update the menu session with the new item
       setItemName("");
@@ -28,7 +28,7 @@ const MenuManagement = ({ updateMenuSession }) => {
   };
 
   const handleDeleteItem = (index) => {
-    const updatedMenu = menu.filter((_, i) => i !== index);
+    const updatedMenu = menu.filter((_, i) => i !== index); //filter creates a new array, excluding the deleted item.
     setMenu(updatedMenu);
     updateMenuSession(updatedMenu); // Update the menu session after deletion
   };
