@@ -11,6 +11,9 @@ import OrderManagement from "./Components/Admin/OrderManagement";
 import Menu from "./Components/Students/Menu";
 import Cart from "./Components/Students/Cart";
 import Orders from "./Components/Students/Orders";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
+import { Box } from "@mui/material";
 
 const navLinkStyle = {
   color: "white",
@@ -70,17 +73,24 @@ const App = () => {
         }}
       >
         <Link to="/Admin/menu-management" style={navLinkStyle}>
-          Menu
+          Menu Management
         </Link>
         <Link to="/Admin/order-management" style={navLinkStyle}>
-          Order
+          Order Management
         </Link>
         <Link to="/Students/menu" style={navLinkStyle}>
           Menus
         </Link>
-        <Link to="/Students/cart" style={navLinkStyle}>
-          Cart
-        </Link>
+        <Box
+          sx={{ display: "flex", gap: "10px", justifyContent: "space-between" }}
+        >
+          <Link to="/Students/cart" style={navLinkStyle}>
+            Cart
+            <Badge badgeContent={cart.length} color="primary">
+              <MailIcon color="#fff" />
+            </Badge>
+          </Link>
+        </Box>
         <Link to="/Students/orders" style={navLinkStyle}>
           Orders
         </Link>
@@ -96,20 +106,13 @@ const App = () => {
         />
         <Route
           path="/Students/menu"
-          element={
-            <Menu menu={menuSession} onAddToCart={handleAddToCart} />
-          }
+          element={<Menu menu={menuSession} onAddToCart={handleAddToCart} />}
         />
         <Route
           path="/Students/cart"
-          element={
-            <Cart cart={cart} onPlaceOrder={handlePlaceOrder} />
-          }
+          element={<Cart cart={cart} onPlaceOrder={handlePlaceOrder} />}
         />
-        <Route
-          path="/Students/orders"
-          element={<Orders orders={orders} />}
-        />
+        <Route path="/Students/orders" element={<Orders orders={orders} />} />
         <Route path="/" element={<Navigate to="/Students/menu" />} />
       </Routes>
     </Router>

@@ -15,11 +15,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const MenuManagement = ({ updateMenuSession }) => {
   const [menu, setMenu] = useState([]);
   const [itemName, setItemName] = useState("");
+  const [itemPrice, setItemPrice] = useState("");
   const [itemImage, setItemImage] = useState(null);
 
   const handleAddItem = () => {
-    if (itemName && itemImage) {
-      const newItem = { name: itemName, image: URL.createObjectURL(itemImage) }; //Creates a new object with the name and image (converted to a displayable URL).
+    if (itemName && itemImage && itemPrice) {
+      const newItem = {
+        name: itemName,
+        image: URL.createObjectURL(itemImage),
+        price: itemPrice,
+      }; //Creates a new object with the name and image (converted to a displayable URL).
       setMenu([...menu, newItem]);
       updateMenuSession([...menu, newItem]); // Update the menu session with the new item
       setItemName("");
@@ -38,13 +43,34 @@ const MenuManagement = ({ updateMenuSession }) => {
       <Typography variant="h4" gutterBottom>
         Menu Management
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 2 }}>
-        <TextField
-          label="Food Item Name"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-          fullWidth
-        />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          marginBottom: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+          }}
+        >
+          <TextField
+            label="Food Item Name"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            label="Price"
+            value={itemPrice}
+            onChange={(e) => setItemPrice(e.target.value)}
+            fullWidth
+          />
+        </Box>
         <Input
           type="file"
           inputProps={{ accept: "image/*" }}

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
 
 const Menu = ({ menu, onAddToCart }) => {
-  const handleAddToCart = (item, event) => {
+  const handleAddToCart = (item, event, price) => {
     onAddToCart(item);
     const button = event.target;
     button.style.opacity = "0.6";
@@ -49,6 +49,9 @@ const Menu = ({ menu, onAddToCart }) => {
             <CardContent>
               <Typography variant="h6" align="center" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
                 {item.name}
+              </Typography>
+              <Typography variant="h5" align="center" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+                {item.price}
               </Typography>
             </CardContent>
             <Button
